@@ -1,0 +1,1 @@
+export const connString = "mongodb+srv://ahsan1234:1234@cluster0.alag7jc.mongodb.net/";
