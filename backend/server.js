@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import todoRoutes from "./routes/todoRoute.js";
+import authRoutes from './routes/authRoute.js';
 import dotenv from "dotenv";
 import { connString } from "./ENV.js";
 import cors from 'cors';
@@ -18,6 +19,7 @@ mongoose
   .finally(() => console.log("start"));
   app.use(express.json());
 app.use("/api/todo", todoRoutes);
+app.use("/api/auth", authRoutes);
 
 
 app.listen(port, () => {

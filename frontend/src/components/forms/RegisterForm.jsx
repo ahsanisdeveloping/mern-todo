@@ -11,18 +11,38 @@ import { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import { Mail } from "@mui/icons-material";
 import LockIcon from "@mui/icons-material/Lock";
-const RegisterFrom = ({invertToggleFlag}) => {
+const RegisterForm = ({invertToggleFlag}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleRegister = () => {
-
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const handleRegister = async () => {
+    if(password === confirmPassword && password.length >0 && confirmPassword.length>0) {
+    // alert(`Name: ${name} \n Email:${email} \n Password: ${password} \n Confirm Password: ${confirmPassword}`);
+    const response = await fetch('http://localhost:3001/api/auth/signup/', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullname: name,
+        email: email,
+        password: password,
+      }),
+    })
+    if(response.ok){
+    invertToggleFlag();
+      console.log("Sign Up Successfully");
+    }
+  }else{
+    alert("Fill all the fields carefully!")
   }
+}
   return (
     <Card
       elevation={10}
       className="innerCard"
-      sx={{ margin: "50px auto", width: 400, borderRadius: "30px" }}
+      sx={{ margin: "0px auto", width: 400, borderRadius: "30px" }}
     >
       <Box sx={{ width: 300, padding: "50px" }}>
         <div>
@@ -97,9 +117,9 @@ const RegisterFrom = ({invertToggleFlag}) => {
             variant="outlined"
             type="password"
             sx={{ width: "100%", marginTop: "10px" }}
-            value={password}
+            value={confirmPassword}
             onChange={(e) => {
-              setPassword(e.target.value);
+              setConfirmPassword(e.target.value);
             }}
             InputProps={{
               startAdornment: (
@@ -161,4 +181,4 @@ const RegisterFrom = ({invertToggleFlag}) => {
   );
 };
 
-export default RegisterFrom;
+export default RegisterForm;

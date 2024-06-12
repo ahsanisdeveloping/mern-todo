@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import LoginForm from "../forms/LoginForm";
 import { useState } from "react";
-import RegisterFrom from "../forms/RegisterForm";
+import RegisterForm from "../forms/RegisterForm";
 
 const Auth = () => {
     const [toggleFlag,setToggleFlag] = useState(true)
@@ -10,7 +10,8 @@ const Auth = () => {
     }
     return ( 
         <Box>
-            {toggleFlag?<LoginForm invertToggleFlag={invertToggleFlag}/>:<RegisterFrom invertToggleFlag={invertToggleFlag}/>}
+            <Typography textAlign={"center"} color="primary" variant="h2" sx={{padding:"10px"}}>MERN-TODO-APP</Typography>
+            {toggleFlag?<LoginForm invertToggleFlag={invertToggleFlag}/>:<RegisterForm invertToggleFlag={invertToggleFlag}/>}
         </Box>
 
      );

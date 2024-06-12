@@ -46,7 +46,7 @@ const LoginForm = ({ invertToggleFlag }) => {
     <Card
       elevation={10}
       className="innerCard"
-      sx={{ margin: "50px auto", width: 400, borderRadius: "30px" }}
+      sx={{ margin: "0px auto", width: 400, borderRadius: "30px" }}
     >
       <Box sx={{ width: 300, padding: "50px" }}>
         <div>
