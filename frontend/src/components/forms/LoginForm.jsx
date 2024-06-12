@@ -20,7 +20,7 @@ import { Mail } from "@mui/icons-material";
 import { Alert } from "@mui/joy";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {signin} from "../../redux/authReducer/authSlice"
+import {signin} from "../../redux/authReducer/authSlice";
 const LoginForm = ({ invertToggleFlag }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
