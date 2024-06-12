@@ -16,3 +16,22 @@ export const signup = async (req, res, next) => {
     }
   };
   
+  export const signin = async (req, res, next) => {
+    const { email, password } = req.body;
+    try {
+      const validUser = await User.findOne({ email });
+      if (!validUser) {
+        return next(errorHandler(404, "User not found"));
+      }
+      if(validUser.password === password) {
+        res
+        .status(200)
+        .json(validUser);
+      }else{
+        res.status(404).json("Login Failed")
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+  

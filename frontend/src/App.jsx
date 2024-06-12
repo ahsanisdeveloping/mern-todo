@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Navigations from './routes/Navigations';
-import Auth from './components/screens/Auth.jsx'
+import Auth from './screens/Auth.jsx'
 function App() {
   return (
     <>

@@ -31,7 +31,7 @@ const LoginForm = ({ invertToggleFlag }) => {
       },
       body: JSON.stringify({
         email: email,
-        password: 123,
+        password: password,
       }),
     })
       .then((res) => res.json())
@@ -111,7 +111,6 @@ const LoginForm = ({ invertToggleFlag }) => {
               variant="contained"
               size={"large"}
               onClick={handleSignin}
-              // onKeyDown={handleKeyDown}
             >
               Sign in
             </Button>

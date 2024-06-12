@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import LoginForm from "../forms/LoginForm";
+import LoginForm from "../components/forms/LoginForm";
+import RegisterForm from "../components/forms/RegisterForm";
 import { useState } from "react";
-import RegisterForm from "../forms/RegisterForm";
 
 const Auth = () => {
     const [toggleFlag,setToggleFlag] = useState(true)
