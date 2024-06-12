@@ -5,8 +5,8 @@ import Auth from './screens/Auth.jsx'
 function App() {
   return (
     <>
-      {/* <Navigations/> */}
-      <Auth/>
+      <Navigations/>
+      {/* <Auth/> */}
     </>
       
   );

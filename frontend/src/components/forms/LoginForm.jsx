@@ -19,10 +19,13 @@ import LockIcon from "@mui/icons-material/Lock";
 import { Mail } from "@mui/icons-material";
 import { Alert } from "@mui/joy";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {signin} from "../../redux/authReducer/authSlice"
 const LoginForm = ({ invertToggleFlag }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const handleSignin = () => {
     fetch("http://localhost:3001/api/auth/signin", {
       method: "POST",
@@ -36,6 +39,7 @@ const LoginForm = ({ invertToggleFlag }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        dispatch(signin(data))
         console.log(data);
       })
       .catch((err) => {

@@ -1,8 +1,12 @@
+import { Button } from '@mui/material';
 import '../styles/appbar.css'
 
 import { Link } from "react-router-dom";
 
 const Appbar = () => {
+  const handleSignOut = async () => {
+   
+  }
   return ( 
     <div className="appbar" 
     // style={
@@ -20,6 +24,7 @@ const Appbar = () => {
     >
       <Link className='appbar-links' to='/'>View Items</Link>
       <Link className='appbar-links' to='additem'>Add Item</Link>
+      <Button onClick={handleSignOut} variant='contained' color="error">Sign Out</Button>
     </div>
    );
 }
