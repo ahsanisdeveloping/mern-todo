@@ -52,9 +52,11 @@ const ViewItems = () => {
   };
   return (
     <Box>
-      <Typography variant="h3" align="center" sx={{ padding: 3 }}>
+      <Typography textAlign={"center"} color="primary"   variant="h4">Welcome {currentUser.fullname}!</Typography>
+      <Typography variant="h3" align="center" sx={{ padding: 1 }}>
         View Items
       </Typography>
+      
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead sx={{ backgroundColor: "black" }}>
