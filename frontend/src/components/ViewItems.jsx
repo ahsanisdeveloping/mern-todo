@@ -7,10 +7,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 const ViewItems = () => {
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const user_id = currentUser._id;
   const [itemsArray, setItemsArray] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/api/todo/gettodos")
+    fetch("http://localhost:3001/api/todo/gettodos/"+user_id)
       .then((res) => res.json())
       .then((data) => {
         setItemsArray(data);
@@ -76,7 +80,7 @@ const ViewItems = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {itemsArray.map((item) => (
+            {itemsArray.length>0?itemsArray.map((item) => (
               <TableRow
                 key={item._id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -105,7 +109,7 @@ const ViewItems = () => {
                   </Button>
                 </TableCell>
               </TableRow>
-            ))}
+            )):<Typography sx={{padding:3}}>Add Items to Display here!</Typography>}
           </TableBody>
         </Table>
       </TableContainer>

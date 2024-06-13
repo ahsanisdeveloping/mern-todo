@@ -1,18 +1,23 @@
 import { Typography, Box, Card, TextField, Button } from "@mui/material";
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+
 const AddItem = () => {
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const user_id = currentUser._id;
     const navigate = useNavigate();
   const [todo, setTodo] = useState({
     item: "",
     status: "pending",
+    user_id:user_id
   });
   const handleItemText = (e) => {
     const tempItem = { ...todo, item: e.target.value };
     setTodo(tempItem);
   };
   const handleTodoAdd = async () => {
-    const response = await fetch("http://localhost:3001/api/todo/inserttodo", {
+    const response = await fetch("http://localhost:3001/api/todo/inserttodo/", {
       method: "POST",
       body: JSON.stringify(todo),
       headers: {

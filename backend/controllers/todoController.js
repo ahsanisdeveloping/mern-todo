@@ -2,10 +2,10 @@
 import getTodoModel from "../models/todos.model.js";
 import mongoose from "mongoose";
 export const insertTodo = async (req, res) => {
-  const {item,status} = req.body;
+  const {item,status,user_id} = req.body;
   const Todo = getTodoModel();
   try {
-    const todo = await Todo.create({ item,status });
+    const todo = await Todo.create({ item,status,user_id });
     res.status(200).json(todo);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -13,9 +13,10 @@ export const insertTodo = async (req, res) => {
 };
 
 export const getTodos = async (req, res, next) => {
+  const { user_id } = req.params;
     const Todo = getTodoModel();
   try {
-    const todos = await Todo.find();
+    const todos = await Todo.find({ user_id });
     res.status(200).json(todos);
   } catch (error) {
     res.status(500).json({ message: error.message });

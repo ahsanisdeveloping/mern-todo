@@ -20,14 +20,16 @@ import { Mail } from "@mui/icons-material";
 import { Alert } from "@mui/joy";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {signin} from "../../redux/authReducer/authSlice";
+import { signin } from "../../redux/authReducer/authSlice";
+
 const LoginForm = ({ invertToggleFlag }) => {
+  const currentUser = useSelector((state) => state.auth.currentUser);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const handleSignin = () => {
-    fetch("http://localhost:3001/api/auth/signin", {
+  const handleSignin =  async () => {
+    const response = await fetch("http://localhost:3001/api/auth/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,14 +39,15 @@ const LoginForm = ({ invertToggleFlag }) => {
         password: password,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(signin(data))
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if(response.ok)
+      {
+        const data = await response.json();
+        dispatch(signin(data));
+      }
+      else{
+        alert("Loginfailed")
+      }
+     
   };
   return (
     <Card
