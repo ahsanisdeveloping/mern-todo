@@ -22,6 +22,15 @@ export const getTodos = async (req, res, next) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getAllTodos = async (req, res, next) => {
+  const Todo = getTodoModel();
+  try {
+    const todos = await Todo.find();
+    res.status(200).json(todos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 export const deleteTodo = async (req, res) => {
   const Todo = getTodoModel();

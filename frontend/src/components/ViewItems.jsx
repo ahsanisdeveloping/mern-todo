@@ -14,11 +14,21 @@ const ViewItems = () => {
   const user_id = currentUser._id;
   const [itemsArray, setItemsArray] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/api/todo/gettodos/"+user_id)
+    if(currentUser.role==="Admin"){
+      fetch("http://localhost:3001/api/todo/getalltodos/")
       .then((res) => res.json())
       .then((data) => {
         setItemsArray(data);
       });
+    }
+    else{
+      fetch("http://localhost:3001/api/todo/gettodos/"+user_id)
+      .then((res) => res.json())
+      .then((data) => {
+        setItemsArray(data);
+      });
+    }
+    
   }, []);
   const handleDelete = async (id) => {
     console.log(id);

@@ -6,38 +6,48 @@ import {
   InputAdornment,
   Button,
   DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import { Mail } from "@mui/icons-material";
 import LockIcon from "@mui/icons-material/Lock";
-const RegisterForm = ({invertToggleFlag}) => {
+const RegisterForm = ({ invertToggleFlag }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const handleRegister = async () => {
-    if(password === confirmPassword && password.length >0 && confirmPassword.length>0) {
-    // alert(`Name: ${name} \n Email:${email} \n Password: ${password} \n Confirm Password: ${confirmPassword}`);
-    const response = await fetch('http://localhost:3001/api/auth/signup/', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        fullname: name,
-        email: email,
-        password: password,
-      }),
-    })
-    if(response.ok){
-    invertToggleFlag();
-      console.log("Sign Up Successfully");
+    if (
+      password === confirmPassword &&
+      password.length > 0 &&
+      confirmPassword.length > 0
+    ) {
+      // alert(`Name: ${name} \n Email:${email} \n Password: ${password} \n Confirm Password: ${confirmPassword}`);
+      const response = await fetch("http://localhost:3001/api/auth/signup/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullname: name,
+          email: email,
+          password: password,
+          role: role,
+        }),
+      });
+      if (response.ok) {
+        invertToggleFlag();
+        console.log("Sign Up Successfully");
+      }
+    } else {
+      alert("Fill all the fields carefully!");
     }
-  }else{
-    alert("Fill all the fields carefully!")
-  }
-}
+  };
   return (
     <Card
       elevation={10}
@@ -94,6 +104,24 @@ const RegisterForm = ({invertToggleFlag}) => {
             placeholder="Enter Email Address"
             label="Email Address"
           />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+            <Select
+              sx={{
+                marginTop: "10px",
+              }}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={role}
+              label="Role"
+              onChange={(e) => {
+                setRole(e.target.value);
+              }}
+            >
+              <MenuItem value="Admin">Admin</MenuItem>
+              <MenuItem value="User">User</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             variant="outlined"
             type="password"

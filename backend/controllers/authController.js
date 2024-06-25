@@ -1,10 +1,11 @@
 import User from '../models/user.model.js';
 export const signup = async (req, res, next) => {
-    const { fullname, email, password} = req.body;
+    const { fullname, email, password,role} = req.body;
     const newUser = new User({
       fullname,
       email,
       password,
+      role,
     });
   
     try {
