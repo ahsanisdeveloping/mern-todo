@@ -1,4 +1,4 @@
-import { Typography, Box, Card, TextField, Button } from "@mui/material";
+import { Typography, Box, Card, TextField, Button, CircularProgress } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,7 +18,9 @@ const ViewItems = () => {
   const currentUser = useSelector((state) => state.auth.currentUser);
   const user_id = currentUser._id;
   const [itemsArray, setItemsArray] = useState([]);
-  const [flag,setFlag] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [flag, setFlag] = useState(0);
+
   useEffect(() => {
     if (currentUser.role === "Admin") {
       fetch("http://localhost:3001/api/todo/getalltodos/")
@@ -34,73 +36,55 @@ const ViewItems = () => {
         });
     }
   }, [flag]);
+
   const onDragEnd = async (result) => {
-    // console.log(result);
     const { draggableId, source, destination } = result;
     if (!destination) return;
     if (source.droppableId === destination.droppableId) return;
-    if (destination.droppableId == "pendingTasks") {
-      console.log("change status to pending");
-      const response = await fetch("http://localhost:3001/api/todo/updatetodo/" + draggableId, {
-        method: "PUT",
-        body: JSON.stringify({
-              status:"pending",
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const jsonResponse = await response.json();
-      if (response.ok) {
-          // window.location.reload(true);
-          setFlag(prev=>prev+1)
-      } else {
-        alert("there was an error updating");
-      }
+
+    setLoading(true);
+
+    let newStatus = "";
+
+    if (destination.droppableId === "pendingTasks") {
+      newStatus = "pending";
+    } else if (destination.droppableId === "requiredApproval") {
+      newStatus = "required approval";
+    } else if (destination.droppableId === "completedTasks") {
+      newStatus = "completed";
     }
-    if (destination.droppableId == "requiredApproval") {
-      console.log("change status to requiredApproval");
+
+    try {
       const response = await fetch("http://localhost:3001/api/todo/updatetodo/" + draggableId, {
         method: "PUT",
         body: JSON.stringify({
-              status:"required approval",
+          status: newStatus,
         }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const jsonResponse = await response.json();
+
       if (response.ok) {
-          // window.location.reload(true);
-          setFlag(prev=>prev+1)
+        setFlag((prev) => prev + 1);
       } else {
-        alert("there was an error updating");
+        alert("There was an error updating");
       }
-    }
-    if (destination.droppableId == "completedTasks") {
-      console.log("change status to completed");
-      const response = await fetch("http://localhost:3001/api/todo/updatetodo/" + draggableId, {
-        method: "PUT",
-        body: JSON.stringify({
-              status:"completed",
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const jsonResponse = await response.json();
-      if (response.ok) {
-          // window.location.reload(true);
-          setFlag(prev=>prev+1)
-      } else {
-        alert("there was an error updating");
-      }
+    } catch (error) {
+      console.error(error);
+      alert("There was an error updating");
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Box>
-        <div style={{ display: "flex", flexWrap: "nowrap" }}>
+        {loading?
+          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>: <div style={{ display: "flex", flexWrap: "nowrap", }}>
           <Droppable droppableId="pendingTasks">
             {(provided) => (
               <BootCard
@@ -116,10 +100,9 @@ const ViewItems = () => {
                     itemsArray.map((item, index) => {
                       if (item.status === "pending") {
                         return (
-                          <Draggable draggableId={item._id} index={index}>
+                          <Draggable key={item._id} draggableId={item._id} index={index}>
                             {(provided) => (
                               <ListGroup.Item
-                                key={item._id}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 ref={provided.innerRef}
@@ -151,10 +134,9 @@ const ViewItems = () => {
                     itemsArray.map((item, index) => {
                       if (item.status === "required approval") {
                         return (
-                          <Draggable draggableId={item._id} index={index}>
+                          <Draggable key={item._id} draggableId={item._id} index={index}>
                             {(provided) => (
                               <ListGroup.Item
-                                key={item._id}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 ref={provided.innerRef}
@@ -186,10 +168,9 @@ const ViewItems = () => {
                     itemsArray.map((item, index) => {
                       if (item.status === "completed") {
                         return (
-                          <Draggable draggableId={item._id} index={index}>
+                          <Draggable key={item._id} draggableId={item._id} index={index}>
                             {(provided) => (
                               <ListGroup.Item
-                                key={item._id}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 ref={provided.innerRef}
@@ -206,7 +187,8 @@ const ViewItems = () => {
               </BootCard>
             )}
           </Droppable>
-        </div>
+        </div>  
+        }
       </Box>
     </DragDropContext>
   );
