@@ -4,6 +4,7 @@ import ViewItems from "../components/ViewItems";
 import AddItem from "../components/AddItem";
 import { useSelector } from "react-redux";
 import Auth from "../screens/Auth";
+import ManageItems from "../components/ManageItems";
 const Navigations = () => {
     const currentUser = useSelector((state) => state.auth.currentUser);
     return ( 
@@ -14,6 +15,7 @@ const Navigations = () => {
         <Routes>
             <Route path="/" element={<ViewItems/>} />
             <Route path="/additem" element={<AddItem/>} />
+            <Route path="/manageitems" element={<ManageItems/>} />
         </Routes>
         </>:<Auth/>}
            
