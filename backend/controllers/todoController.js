@@ -45,20 +45,48 @@ export const deleteTodo = async (req, res) => {
   res.status(200).json(todo);
 };
 
+// export const updateTodo = async (req, res) => {
+//   const Todo = getTodoModel();
+//   const { id } = req.params;
+//   if (!mongoose.Types.ObjectId.isValid(id)) {
+//     return res.status(404).json({ error: "item not found!" });
+//   }
+//   const todo = await Todo.findOneAndUpdate(
+//     { _id: id },
+//     {
+//       ...req.body,
+//     }
+//   );
+//   if (!todo) {
+//     return res.status(400).json({ error: "Item not found!" });
+//   }
+//   res.status(200).json(todo);
+// };
 export const updateTodo = async (req, res) => {
   const Todo = getTodoModel();
   const { id } = req.params;
+  const { status } = req.body; // assuming the body contains the attribute to update
+
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "item not found!" });
+    return res.status(404).json({ error: "Item not found!" });
   }
-  const todo = await Todo.findOneAndUpdate(
-    { _id: id },
-    {
-      ...req.body,
+
+  try {
+    let todo = await Todo.findById(id);
+
+    if (!todo) {
+      return res.status(404).json({ error: "Item not found!" });
     }
-  );
-  if (!todo) {
-    return res.status(400).json({ error: "Item not found!" });
+
+    // Update the specific attribute
+    todo.status = status; // replace attributeName with the actual attribute you want to update
+
+    // Save the updated document back to the database
+    await todo.save();
+
+    res.status(200).json(todo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
-  res.status(200).json(todo);
 };
